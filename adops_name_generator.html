@@ -30,7 +30,6 @@ body{font-family:var(--font-sans);color:var(--color-text-primary);padding:1.5rem
 
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.full{grid-column:1/-1}
 .field{display:flex;flex-direction:column;gap:5px}
 label{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:0.05em}
 .hint{font-size:11px;color:var(--color-text-tertiary)}
@@ -53,6 +52,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12
 .pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
 .pill{font-size:11px;padding:3px 9px;border-radius:20px;font-family:var(--font-mono)}
 .pill.done{background:#1D9E75;color:#E1F5EE}
+.pill.pending{background:#B5D4F4;color:#0C447C}
 .pill.optional{background:#FAEEDA;color:#854F0B}
 
 .actions{display:flex;gap:8px;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
@@ -62,7 +62,9 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12
 .btn-copy:hover{background:#0C447C}
 .btn-reset{background:#FAEEDA;color:#633806;border:0.5px solid #EF9F27}
 .btn-reset:hover{background:#FAC775}
-.toast{font-size:13px;color:#0F6E56;background:#E1F5EE;padding:4px 12px;border-radius:20px;opacity:0;transition:opacity 0.2s;font-weight:500}
+.toast{font-size:13px;padding:4px 12px;border-radius:20px;opacity:0;transition:opacity 0.2s;font-weight:500}
+.toast#toast{color:#0F6E56;background:#E1F5EE}
+.toast#error-toast{color:#B91C1C;background:#FDECEA}
 .toast.show{opacity:1}
 
 .history-section{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
@@ -78,15 +80,15 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12
 .hist-list{display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto}
 .hist-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);transition:background 0.1s}
 .hist-item:hover{background:#EEEDFE;border-color:#CECBF6}
-.hist-num{font-size:11px;color:var(--color-text-tertiary);min-width:18px;text-align:right}
+.hist-num{font-size:11px;color:var(--color-text-tertiary);min-width:18px;text-align:right;flex-shrink:0}
 .hist-name{font-family:var(--font-mono);font-size:12px;color:var(--color-text-primary);flex:1;word-break:break-all;line-height:1.5}
 .hist-ts{font-size:11px;color:var(--color-text-tertiary);white-space:nowrap;flex-shrink:0}
 .btn-copy-sm{height:26px;padding:0 10px;font-size:11px;border-radius:var(--border-radius-md);border:none;background:#185FA5;color:#fff;cursor:pointer;font-family:var(--font-sans);font-weight:500;flex-shrink:0}
 .btn-copy-sm:hover{background:#0C447C}
-
 .icon{width:16px;height:16px;display:inline-block;vertical-align:middle}
 </style>
 
+<!-- HEADER -->
 <div class="app-header">
   <div class="header-icon">
     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
@@ -97,6 +99,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12
   </div>
 </div>
 
+<!-- SECTION 1 -->
 <div class="section">
   <div class="section-header purple">
     <div class="section-num">1</div>
@@ -125,6 +128,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12
   </div>
 </div>
 
+<!-- SECTION 2 -->
 <div class="section">
   <div class="section-header teal">
     <div class="section-num">2</div>
@@ -134,9 +138,9 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12
   <div class="section-body">
     <div class="grid3">
       <div class="field">
-        <label>App</label>
+        <label>App <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--color-text-tertiary)">(optional)</span></label>
         <select id="app">
-          <option value="">Select app (optional)</option>
+          <option value="">Select app</option>
           <option>News app</option><option>Sport app</option>
         </select>
       </div>
@@ -179,6 +183,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12
   </div>
 </div>
 
+<!-- SECTION 3 -->
 <div class="section">
   <div class="section-header amber">
     <div class="section-num">3</div>
@@ -188,7 +193,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12
   <div class="section-body">
     <div class="grid2">
       <div class="field">
-        <label>Creative version or 3rd party tag ID</label>
+        <label>Creative version or 3rd party tag ID <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--color-text-tertiary)">(optional)</span></label>
         <input type="text" id="version" placeholder="e.g. v1 or tag-98765" maxlength="40">
       </div>
       <div class="field">
@@ -199,10 +204,11 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12
   </div>
 </div>
 
+<!-- PREVIEW -->
 <div class="preview-section">
   <div class="preview-header">
     <div class="preview-header-title">Generated name</div>
-    <div class="completeness" id="completeness">0 of 7 fields complete</div>
+    <div class="completeness" id="completeness">0 of 7 fields complete (App &amp; Version optional)</div>
   </div>
   <div class="preview-body">
     <div class="name-display" id="preview">
@@ -212,18 +218,21 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12
   </div>
 </div>
 
+<!-- ACTIONS -->
 <div class="actions">
-  <button class="btn btn-copy" onclick="copyAndSave()">
+  <button class="btn btn-copy" id="copyBtn">
     <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2H3.5A1.5 1.5 0 0 0 2 3.5V10A1.5 1.5 0 0 0 3.5 11H5"/></svg>
     Copy &amp; save to history
   </button>
-  <button class="btn btn-reset" onclick="resetForm()">
+  <button class="btn btn-reset" id="resetBtn">
     <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8a6 6 0 1 0 1.2-3.6"/><path d="M2 3v3h3"/></svg>
     Reset form
   </button>
   <span class="toast" id="toast">Copied to clipboard!</span>
+  <span class="toast" id="error-toast">Please complete all required fields.</span>
 </div>
 
+<!-- HISTORY -->
 <div class="history-section">
   <div class="hist-header">
     <div class="hist-left">
@@ -231,41 +240,52 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12
       <span class="badge" id="hist-count">0</span>
       <span class="hist-meta">· max 100 entries</span>
     </div>
-    <button class="btn-clear" onclick="clearHistory()">Clear all</button>
+    <button class="btn-clear" id="clearBtn">Clear all</button>
   </div>
   <div class="hist-body">
-    <div id="hist-list"><div class="hist-empty">No names generated yet — fill in the form and hit copy.</div></div>
+    <div id="hist-list">
+      <div class="hist-empty">No names generated yet — fill in the form and hit copy.</div>
+    </div>
   </div>
 </div>
 
 <script>
-const LIMIT=100;
-let history=[];
-const fieldIds=['region','orderid','campaign','app','placement','adsize','version','datepick'];
-const labels=['Region','Order ID & Campaign','App','Placement','Ad size','Version/Tag','Date'];
+const LIMIT = 100;
+let historyData = [];
 
-function today(){return new Date().toISOString().split('T')[0]}
-document.getElementById('datepick').value=today();
+const fieldIds = ['region','orderid','campaign','app','placement','adsize','version','datepick'];
+const labels   = ['Region','Order ID & Campaign','App','Placement','Ad size','Version/Tag','Date'];
+// indices 2 (app) and 5 (version) are optional
+const optionalIdx = [2, 5];
 
-fieldIds.forEach(id=>{
-  const el=document.getElementById(id);
-  el.addEventListener('change',update);
-  el.addEventListener('input',update);
+function today() {
+  return new Date().toISOString().split('T')[0];
+}
+document.getElementById('datepick').value = today();
+
+// Live update on every field change
+fieldIds.forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('change', update);
+  el.addEventListener('input', update);
 });
 
-function fmtDate(v){
-  if(!v)return'';
-  const[y,m,d]=v.split('-');
-  return d+m+y;
+function slugify(v) {
+  return v.replace(/\s+/g,'').replace(/[^a-zA-Z0-9\-]/g,'');
 }
-function slugify(v){return v.replace(/\s+/g,'').replace(/[^a-zA-Z0-9\-]/g,'')}
 
-function buildParts(){
-  const oid=document.getElementById('orderid').value.trim();
-  const camp=slugify(document.getElementById('campaign').value.trim());
-  const order=oid&&camp?oid+'_'+camp:(oid||camp);
-  const app=document.getElementById('app').value.replace(/\s+/g,'');
-  return[
+function fmtDate(v) {
+  if (!v) return '';
+  const [y,m,d] = v.split('-');
+  return d + m + y;
+}
+
+function buildParts() {
+  const oid  = document.getElementById('orderid').value.trim();
+  const camp = slugify(document.getElementById('campaign').value.trim());
+  const order = oid && camp ? oid + '_' + camp : (oid || camp);
+  const app   = document.getElementById('app').value.replace(/\s+/g,'');
+  return [
     document.getElementById('region').value,
     order,
     app,
@@ -276,91 +296,139 @@ function buildParts(){
   ];
 }
 
-function update(){
-  const parts=buildParts();
-  const required=parts.filter((_,i)=>i!==2);
-  const filled=parts.filter(p=>p).length;
-  document.getElementById('completeness').textContent=`${filled} of 7 fields complete (App optional)`;
+function update() {
+  const parts  = buildParts();
+  const filled = parts.filter(p => p).length;
+  document.getElementById('completeness').textContent =
+    `${filled} of 7 fields complete (App & Version optional)`;
 
-  const preview=document.getElementById('preview');
-  const pills=document.getElementById('pills');
+  const preview = document.getElementById('preview');
+  const pills   = document.getElementById('pills');
 
-  if(parts.every(p=>!p)){
-    preview.innerHTML='<span class="placeholder">Complete the fields above to preview your creative name.</span>';
-    pills.innerHTML='';return;
+  if (parts.every(p => !p)) {
+    preview.innerHTML = '<span class="placeholder">Complete the fields above to preview your creative name.</span>';
+    pills.innerHTML = '';
+    return;
   }
 
-  let html='';
-  parts.forEach((p,i)=>{
-    if(i>0)html+=`<span class="sep">_</span>`;
-    html+=`<span class="${p?'seg-filled':'seg-empty'}">${p||'…'}</span>`;
+  // Build preview — only show filled segments separated by _
+  const filledParts = parts.filter(p => p);
+  let html = '';
+  parts.forEach((p, i) => {
+    if (i > 0) html += `<span class="sep">_</span>`;
+    html += `<span class="${p ? 'seg-filled' : 'seg-empty'}">${p || '…'}</span>`;
   });
-  preview.innerHTML=html;
+  preview.innerHTML = html;
 
-  pills.innerHTML=labels.map((l,i)=>`<span class="pill ${parts[i]?'done':(i===2?'optional':'pending')}">${l}${i===2?' (optional)':''}: ${parts[i]||'—'}</span>`).join('');
+  pills.innerHTML = labels.map((l, i) =>
+    `<span class="pill ${parts[i] ? 'done' : (optionalIdx.includes(i) ? 'optional' : 'pending')}">${l}${optionalIdx.includes(i) ? ' (opt)' : ''}: ${parts[i] || '—'}</span>`
+  ).join('');
 }
 
-function copyAndSave(){
-  const parts=buildParts();
-  if(parts.some((p,i)=>i!==2&&!p)){alert('Please complete all required fields before copying.');return;}
-  const name=parts.filter(p=>p).join('_');
+function copyText(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none';
+  document.body.appendChild(ta);
+  ta.focus({ preventScroll: true });
+  ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function showError() {
+  const e = document.getElementById('error-toast');
+  e.classList.add('show');
+  setTimeout(() => e.classList.remove('show'), 2500);
+}
+
+// Copy & save — does NOT call renderHistory to avoid scroll jump
+document.getElementById('copyBtn').addEventListener('click', function(e) {
+  e.preventDefault();
+  const parts = buildParts();
+  const missing = parts.some((p, i) => !optionalIdx.includes(i) && !p);
+  if (missing) { showError(); return; }
+
+  const name = parts.filter(p => p).join('_');
   copyText(name);
-  const now=new Date();
-  const ts=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+' · '+now.toLocaleDateString([],{day:'2-digit',month:'short'});
-  history.unshift({name,ts});
-  if(history.length>LIMIT)history=history.slice(0,LIMIT);
-  renderHistory();
-}
 
-function renderHistory(){
-  const list=document.getElementById('hist-list');
-  document.getElementById('hist-count').textContent=history.length;
-  if(!history.length){
-    list.innerHTML='<div class="hist-empty">No names generated yet — fill in the form and hit copy.</div>';return;
+  const now = new Date();
+  const ts  = now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) +
+              ' · ' + now.toLocaleDateString([], {day:'2-digit', month:'short'});
+  historyData.unshift({ name, ts });
+  if (historyData.length > LIMIT) historyData = historyData.slice(0, LIMIT);
+
+  prependHistoryItem(name, ts);
+  document.getElementById('hist-count').textContent = historyData.length;
+});
+
+function prependHistoryItem(name, ts) {
+  const list = document.getElementById('hist-list');
+  // Remove empty placeholder if present
+  const empty = list.querySelector('.hist-empty');
+  if (empty) empty.remove();
+
+  // Increment all existing row numbers and data-idx
+  list.querySelectorAll('.hist-num').forEach(el => {
+    el.textContent = parseInt(el.textContent) + 1;
+  });
+  list.querySelectorAll('.btn-copy-sm[data-idx]').forEach(el => {
+    el.dataset.idx = parseInt(el.dataset.idx) + 1;
+  });
+
+  // Create and prepend new row
+  const div = document.createElement('div');
+  div.className = 'hist-item';
+  div.innerHTML =
+    `<span class="hist-num">1</span>` +
+    `<span class="hist-name">${name}</span>` +
+    `<span class="hist-ts">${ts}</span>` +
+    `<button class="btn-copy-sm" data-idx="0" type="button">Copy</button>`;
+
+  // Wrap in list container if not already
+  let listWrap = list.querySelector('.hist-list');
+  if (!listWrap) {
+    listWrap = document.createElement('div');
+    listWrap.className = 'hist-list';
+    list.appendChild(listWrap);
   }
-  list.innerHTML=`<div class="hist-list">${history.map((e,i)=>`
-    <div class="hist-item">
-      <span class="hist-num">${i+1}</span>
-      <span class="hist-name">${e.name}</span>
-      <span class="hist-ts">${e.ts}</span>
-      <button class="btn-copy-sm" onclick="copyEntry(${i})">Copy</button>
-    </div>`).join('')}</div>`;
+  listWrap.prepend(div);
+
+  // Enforce DOM limit
+  const items = listWrap.querySelectorAll('.hist-item');
+  if (items.length > LIMIT) items[items.length - 1].remove();
 }
 
-function copyEntry(i){copyText(history[i].name)}
+// Event delegation for history copy buttons — no page jump
+document.getElementById('hist-list').addEventListener('click', function(e) {
+  const btn = e.target.closest('.btn-copy-sm[data-idx]');
+  if (btn) {
+    e.preventDefault();
+    e.stopPropagation();
+    copyText(historyData[parseInt(btn.dataset.idx)].name);
+  }
+});
 
-function copyText(text){
-  try{
-    const ta=document.createElement('textarea');
-    ta.value=text;
-    ta.style.cssText='position:absolute;left:-9999px;top:0;opacity:0';
-    document.body.appendChild(ta);
-    ta.focus();ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    const t=document.getElementById('toast');
-    t.classList.add('show');
-    setTimeout(()=>t.classList.remove('show'),2200);
-  }catch(e){alert('Could not copy. Please select and copy the name manually.');}
-}
-
-function clearHistory(){
-  history=[];
-  renderHistory();
-}
-
-function resetForm(){
-  document.getElementById('region').value='';
-  document.getElementById('orderid').value='';
-  document.getElementById('campaign').value='';
-  document.getElementById('app').value='';
-  document.getElementById('placement').value='';
-  document.getElementById('adsize').value='';
-  document.getElementById('version').value='';
-  document.getElementById('datepick').value=today();
+// Reset form
+document.getElementById('resetBtn').addEventListener('click', function(e) {
+  e.preventDefault();
+  ['region','app','placement','adsize'].forEach(id => document.getElementById(id).value = '');
+  ['orderid','campaign','version'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('datepick').value = today();
   update();
-}
+});
+
+// Clear history
+document.getElementById('clearBtn').addEventListener('click', function(e) {
+  e.preventDefault();
+  historyData = [];
+  document.getElementById('hist-count').textContent = '0';
+  document.getElementById('hist-list').innerHTML =
+    '<div class="hist-empty">No names generated yet — fill in the form and hit copy.</div>';
+});
 
 update();
-renderHistory();
 </script>
