@@ -1,0 +1,366 @@
+<h2 class="sr-only">Ad Ops Creative Naming Convention Generator</h2>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);color:var(--color-text-primary);padding:1.5rem;max-width:820px}
+
+.app-header{display:flex;align-items:center;gap:14px;margin-bottom:1.5rem;padding:1.25rem 1.5rem;background:var(--color-background-info);border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-info)}
+.header-icon{width:40px;height:40px;border-radius:var(--border-radius-md);background:#185FA5;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.header-icon svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.app-title{font-size:18px;font-weight:500;color:#0C447C}
+.app-sub{font-size:12px;color:#185FA5;margin-top:2px}
+
+.section{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);margin-bottom:1rem;overflow:hidden}
+.section-header{display:flex;align-items:center;gap:10px;padding:0.85rem 1.25rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+.section-header.purple{background:#EEEDFE}
+.section-header.teal{background:#E1F5EE}
+.section-header.amber{background:#FAEEDA}
+.section-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
+.purple .section-num{background:#AFA9EC;color:#26215C}
+.teal .section-num{background:#5DCAA5;color:#04342C}
+.amber .section-num{background:#EF9F27;color:#412402}
+.section-title{font-size:13px;font-weight:500}
+.purple .section-title{color:#3C3489}
+.teal .section-title{color:#085041}
+.amber .section-title{color:#633806}
+.section-desc{font-size:12px;margin-left:auto}
+.purple .section-desc{color:#534AB7}
+.teal .section-desc{color:#0F6E56}
+.amber .section-desc{color:#854F0B}
+.section-body{padding:1.25rem}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.full{grid-column:1/-1}
+.field{display:flex;flex-direction:column;gap:5px}
+label{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:0.05em}
+.hint{font-size:11px;color:var(--color-text-tertiary)}
+
+input,select{width:100%;height:40px;padding:0 12px;border-radius:var(--border-radius-md);border:1px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-primary);font-size:14px;font-family:var(--font-sans);transition:border-color 0.15s,background 0.15s}
+input:hover,select:hover{border-color:var(--color-border-primary);background:var(--color-background-primary)}
+input:focus,select:focus{outline:none;border-color:#378ADD;background:var(--color-background-primary);box-shadow:0 0 0 3px #E6F1FB}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%23888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+
+.preview-section{border-radius:var(--border-radius-lg);overflow:hidden;margin-bottom:1rem;border:0.5px solid #B5D4F4}
+.preview-header{background:#185FA5;padding:0.85rem 1.25rem;display:flex;align-items:center;justify-content:space-between}
+.preview-header-title{font-size:13px;font-weight:500;color:#E6F1FB}
+.completeness{font-size:11px;color:#85B7EB}
+.preview-body{background:#E6F1FB;padding:1rem 1.25rem}
+.name-display{font-family:var(--font-mono);font-size:13px;line-height:1.8;word-break:break-all;padding:0.85rem 1rem;background:var(--color-background-primary);border-radius:var(--border-radius-md);border:1px solid #B5D4F4;min-height:48px;display:flex;align-items:center}
+.name-display .sep{color:#378ADD;margin:0 1px;font-weight:500}
+.name-display .seg-filled{color:#042C53;font-weight:500}
+.name-display .seg-empty{color:#85B7EB}
+.name-display .placeholder{color:#378ADD;font-style:italic;font-family:var(--font-sans);font-size:13px}
+.pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.pill{font-size:11px;padding:3px 9px;border-radius:20px;font-family:var(--font-mono)}
+.pill.done{background:#1D9E75;color:#E1F5EE}
+.pill.optional{background:#FAEEDA;color:#854F0B}
+
+.actions{display:flex;gap:8px;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
+.btn{height:40px;padding:0 20px;border-radius:var(--border-radius-md);border:none;font-size:14px;font-family:var(--font-sans);cursor:pointer;font-weight:500;transition:opacity 0.15s,transform 0.1s;display:inline-flex;align-items:center;gap:7px}
+.btn:active{transform:scale(0.97)}
+.btn-copy{background:#185FA5;color:#fff}
+.btn-copy:hover{background:#0C447C}
+.btn-reset{background:#FAEEDA;color:#633806;border:0.5px solid #EF9F27}
+.btn-reset:hover{background:#FAC775}
+.toast{font-size:13px;color:#0F6E56;background:#E1F5EE;padding:4px 12px;border-radius:20px;opacity:0;transition:opacity 0.2s;font-weight:500}
+.toast.show{opacity:1}
+
+.history-section{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden}
+.hist-header{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 1.25rem;background:#EEEDFE;border-bottom:0.5px solid #CECBF6}
+.hist-left{display:flex;align-items:center;gap:8px}
+.hist-title{font-size:13px;font-weight:500;color:#3C3489}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:20px;font-size:11px;font-weight:500;background:#534AB7;color:#EEEDFE}
+.hist-meta{font-size:12px;color:#534AB7}
+.btn-clear{height:30px;padding:0 12px;font-size:12px;border-radius:var(--border-radius-md);border:0.5px solid #AFA9EC;background:#fff;color:#534AB7;cursor:pointer;font-family:var(--font-sans);font-weight:500}
+.btn-clear:hover{background:#534AB7;color:#EEEDFE;border-color:transparent}
+.hist-body{padding:1rem 1.25rem}
+.hist-empty{text-align:center;padding:1.5rem;font-size:13px;color:var(--color-text-tertiary)}
+.hist-list{display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto}
+.hist-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);transition:background 0.1s}
+.hist-item:hover{background:#EEEDFE;border-color:#CECBF6}
+.hist-num{font-size:11px;color:var(--color-text-tertiary);min-width:18px;text-align:right}
+.hist-name{font-family:var(--font-mono);font-size:12px;color:var(--color-text-primary);flex:1;word-break:break-all;line-height:1.5}
+.hist-ts{font-size:11px;color:var(--color-text-tertiary);white-space:nowrap;flex-shrink:0}
+.btn-copy-sm{height:26px;padding:0 10px;font-size:11px;border-radius:var(--border-radius-md);border:none;background:#185FA5;color:#fff;cursor:pointer;font-family:var(--font-sans);font-weight:500;flex-shrink:0}
+.btn-copy-sm:hover{background:#0C447C}
+
+.icon{width:16px;height:16px;display:inline-block;vertical-align:middle}
+</style>
+
+<div class="app-header">
+  <div class="header-icon">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+  </div>
+  <div>
+    <div class="app-title">Creative naming tool</div>
+    <div class="app-sub">Generate standardized creative names for Google Ad Manager trafficking.</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header purple">
+    <div class="section-num">1</div>
+    <div class="section-title">Region &amp; order details</div>
+    <div class="section-desc">Identity of the campaign</div>
+  </div>
+  <div class="section-body">
+    <div class="grid3">
+      <div class="field">
+        <label>Region</label>
+        <select id="region">
+          <option value="">Select region</option>
+          <option>NAM</option><option>EMEA</option><option>APAC</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Order ID</label>
+        <input type="text" id="orderid" placeholder="e.g. 12345" maxlength="20">
+      </div>
+      <div class="field">
+        <label>Campaign short name</label>
+        <input type="text" id="campaign" placeholder="e.g. NikeQ2" maxlength="40">
+        <span class="hint">No spaces — CamelCase or hyphens</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header teal">
+    <div class="section-num">2</div>
+    <div class="section-title">App, placement &amp; ad size</div>
+    <div class="section-desc">Where and how the creative appears</div>
+  </div>
+  <div class="section-body">
+    <div class="grid3">
+      <div class="field">
+        <label>App</label>
+        <select id="app">
+          <option value="">Select app (optional)</option>
+          <option>News app</option><option>Sport app</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Placement</label>
+        <select id="placement">
+          <option value="">Select placement</option>
+          <option>ROS</option><option>homepage</option><option>business</option>
+          <option>tech</option><option>culture</option><option>health</option>
+          <option>video</option><option>audio</option><option>sport</option>
+          <option>travel</option><option>earth</option><option>news</option>
+          <option>arts</option><option>live</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Ad size (IAB)</label>
+        <select id="adsize">
+          <option value="">Select ad size</option>
+          <optgroup label="Display">
+            <option>300x250</option><option>728x90</option><option>300x600</option>
+            <option>970x250</option><option>320x50</option><option>320x100</option>
+            <option>300x50</option><option>990x1</option><option>970x90</option>
+            <option>1024x400</option><option>300x253</option><option>10x10</option>
+          </optgroup>
+          <optgroup label="Video">
+            <option>640x480</option><option>512x288</option><option>480x360</option><option>480x361</option>
+          </optgroup>
+          <optgroup label="Sponsorship">
+            <option>100x50</option><option>100x51</option>
+          </optgroup>
+          <optgroup label="Native / Other">
+            <option>Interstitial</option><option>TSQ</option><option>Headliner</option>
+            <option>Image scroller</option><option>Video banner</option><option>Video scroller</option>
+            <option>Interscroller</option><option>Carousel</option><option>Outstream</option>
+            <option>custom</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-header amber">
+    <div class="section-num">3</div>
+    <div class="section-title">Version &amp; date</div>
+    <div class="section-desc">Trafficking metadata</div>
+  </div>
+  <div class="section-body">
+    <div class="grid2">
+      <div class="field">
+        <label>Creative version or 3rd party tag ID</label>
+        <input type="text" id="version" placeholder="e.g. v1 or tag-98765" maxlength="40">
+      </div>
+      <div class="field">
+        <label>Trafficking date</label>
+        <input type="date" id="datepick">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="preview-section">
+  <div class="preview-header">
+    <div class="preview-header-title">Generated name</div>
+    <div class="completeness" id="completeness">0 of 7 fields complete</div>
+  </div>
+  <div class="preview-body">
+    <div class="name-display" id="preview">
+      <span class="placeholder">Complete the fields above to preview your creative name.</span>
+    </div>
+    <div class="pills" id="pills"></div>
+  </div>
+</div>
+
+<div class="actions">
+  <button class="btn btn-copy" onclick="copyAndSave()">
+    <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2H3.5A1.5 1.5 0 0 0 2 3.5V10A1.5 1.5 0 0 0 3.5 11H5"/></svg>
+    Copy &amp; save to history
+  </button>
+  <button class="btn btn-reset" onclick="resetForm()">
+    <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8a6 6 0 1 0 1.2-3.6"/><path d="M2 3v3h3"/></svg>
+    Reset form
+  </button>
+  <span class="toast" id="toast">Copied to clipboard!</span>
+</div>
+
+<div class="history-section">
+  <div class="hist-header">
+    <div class="hist-left">
+      <span class="hist-title">History</span>
+      <span class="badge" id="hist-count">0</span>
+      <span class="hist-meta">· max 100 entries</span>
+    </div>
+    <button class="btn-clear" onclick="clearHistory()">Clear all</button>
+  </div>
+  <div class="hist-body">
+    <div id="hist-list"><div class="hist-empty">No names generated yet — fill in the form and hit copy.</div></div>
+  </div>
+</div>
+
+<script>
+const LIMIT=100;
+let history=[];
+const fieldIds=['region','orderid','campaign','app','placement','adsize','version','datepick'];
+const labels=['Region','Order ID & Campaign','App','Placement','Ad size','Version/Tag','Date'];
+
+function today(){return new Date().toISOString().split('T')[0]}
+document.getElementById('datepick').value=today();
+
+fieldIds.forEach(id=>{
+  const el=document.getElementById(id);
+  el.addEventListener('change',update);
+  el.addEventListener('input',update);
+});
+
+function fmtDate(v){
+  if(!v)return'';
+  const[y,m,d]=v.split('-');
+  return d+m+y;
+}
+function slugify(v){return v.replace(/\s+/g,'').replace(/[^a-zA-Z0-9\-]/g,'')}
+
+function buildParts(){
+  const oid=document.getElementById('orderid').value.trim();
+  const camp=slugify(document.getElementById('campaign').value.trim());
+  const order=oid&&camp?oid+'_'+camp:(oid||camp);
+  const app=document.getElementById('app').value.replace(/\s+/g,'');
+  return[
+    document.getElementById('region').value,
+    order,
+    app,
+    document.getElementById('placement').value,
+    document.getElementById('adsize').value,
+    document.getElementById('version').value.trim().replace(/\s+/g,''),
+    fmtDate(document.getElementById('datepick').value)
+  ];
+}
+
+function update(){
+  const parts=buildParts();
+  const required=parts.filter((_,i)=>i!==2);
+  const filled=parts.filter(p=>p).length;
+  document.getElementById('completeness').textContent=`${filled} of 7 fields complete (App optional)`;
+
+  const preview=document.getElementById('preview');
+  const pills=document.getElementById('pills');
+
+  if(parts.every(p=>!p)){
+    preview.innerHTML='<span class="placeholder">Complete the fields above to preview your creative name.</span>';
+    pills.innerHTML='';return;
+  }
+
+  let html='';
+  parts.forEach((p,i)=>{
+    if(i>0)html+=`<span class="sep">_</span>`;
+    html+=`<span class="${p?'seg-filled':'seg-empty'}">${p||'…'}</span>`;
+  });
+  preview.innerHTML=html;
+
+  pills.innerHTML=labels.map((l,i)=>`<span class="pill ${parts[i]?'done':(i===2?'optional':'pending')}">${l}${i===2?' (optional)':''}: ${parts[i]||'—'}</span>`).join('');
+}
+
+function copyAndSave(){
+  const parts=buildParts();
+  if(parts.some((p,i)=>i!==2&&!p)){alert('Please complete all required fields before copying.');return;}
+  const name=parts.filter(p=>p).join('_');
+  copyText(name);
+  const now=new Date();
+  const ts=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+' · '+now.toLocaleDateString([],{day:'2-digit',month:'short'});
+  history.unshift({name,ts});
+  if(history.length>LIMIT)history=history.slice(0,LIMIT);
+  renderHistory();
+}
+
+function renderHistory(){
+  const list=document.getElementById('hist-list');
+  document.getElementById('hist-count').textContent=history.length;
+  if(!history.length){
+    list.innerHTML='<div class="hist-empty">No names generated yet — fill in the form and hit copy.</div>';return;
+  }
+  list.innerHTML=`<div class="hist-list">${history.map((e,i)=>`
+    <div class="hist-item">
+      <span class="hist-num">${i+1}</span>
+      <span class="hist-name">${e.name}</span>
+      <span class="hist-ts">${e.ts}</span>
+      <button class="btn-copy-sm" onclick="copyEntry(${i})">Copy</button>
+    </div>`).join('')}</div>`;
+}
+
+function copyEntry(i){copyText(history[i].name)}
+
+function copyText(text){
+  try{
+    const ta=document.createElement('textarea');
+    ta.value=text;
+    ta.style.cssText='position:absolute;left:-9999px;top:0;opacity:0';
+    document.body.appendChild(ta);
+    ta.focus();ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const t=document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2200);
+  }catch(e){alert('Could not copy. Please select and copy the name manually.');}
+}
+
+function clearHistory(){
+  history=[];
+  renderHistory();
+}
+
+function resetForm(){
+  document.getElementById('region').value='';
+  document.getElementById('orderid').value='';
+  document.getElementById('campaign').value='';
+  document.getElementById('app').value='';
+  document.getElementById('placement').value='';
+  document.getElementById('adsize').value='';
+  document.getElementById('version').value='';
+  document.getElementById('datepick').value=today();
+  update();
+}
+
+update();
+renderHistory();
+</script>
